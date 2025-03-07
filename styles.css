@@ -1,142 +1,341 @@
-/* Global Styles */
+/* Background remains the same */
+@keyframes backgroundGlow {
+    0% { background-color: #ffc3da; }
+    50% { background-color: #ff9eb5; }
+    100% { background-color: #ffc3da; }
+}
+
 body {
-    background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+    background-color: #ffc3da;
     text-align: center;
-    font-family: 'Arial', sans-serif;
-    overflow: hidden;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Background Glow Effect */
-.background-glow {
+.open-me-text {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: radial-gradient(circle, rgba(255, 199, 209, 0.5) 20%, rgba(255, 149, 175, 0.2) 60%);
-    z-index: -1;
-}
-
-/* Open Me Button */
-.open-me {
-    background: #ff6f91;
-    color: white;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 24px;
-    padding: 15px 25px;
-    border-radius: 20px;
+    font-weight: bold;
+    color: white;
+    background: #ff6f91;
+    padding: 14px 22px;
+    border-radius: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+    cursor: pointer;
+    animation: bounceGlow 1.5s infinite ease-in-out, subtleRotate 4s infinite alternate ease-in-out;
+    z-index: 100;
+    opacity: 1;
+    width: max-content;
+    text-align: center;
+    transform-origin: center; /* Ensures rotation happens around the center */
+}
+
+/* Soft glowing animation */
+@keyframes pulse {
+    0% { transform: translateX(-50%) scale(1); opacity: 1; }
+    100% { transform: translateX(-50%) scale(1.1); opacity: 0.8; }
+}
+
+/* Hide Open Me when envelope is open */
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+    display: none; /* Fully removes it from layout */
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Message for Violet - Styled beautifully */
+.for-violet {
+    font-size: 26px;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    color: #6a0572;
+    background-color: #FF8BA0;
+    padding: 12px 20px;
+    display: inline-block;
+    border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s;
-    animation: bounce 1.5s infinite alternate;
+    margin-bottom: 20px;
 }
 
-.open-me:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-}
-
-@keyframes bounce {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-10px); }
-}
-
-/* Envelope Styles */
+/* Envelope wrapper stays the same */
 .envelope-wrapper {
+    height: 475px;
+}
+
+/* Envelope */
+#envelope {
     position: relative;
-    width: 300px;
-    height: 200px;
-    margin-top: 30px;
-}
-
-.envelope {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #ff4f73;
-    border-radius: 10px;
+    height: 225px;
+    width: 350px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    margin-left: auto;
+    margin-right: auto;
+    top: 50%;
+    background-color: #FF6863;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: transform 0.5s ease-in-out;
+    transition: 0.4s ease-in-out;
 }
 
-.envelope .flap {
+/* Envelope hover effect */
+#envelope:hover {
+    cursor: pointer;
+    transform: scale(1.08) translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Envelope front flap */
+.front {
     position: absolute;
     width: 0;
     height: 0;
-    border-left: 150px solid transparent;
-    border-right: 150px solid transparent;
-    border-bottom: 100px solid #ff4f73;
-    top: -50px;
-    left: 0;
-    right: 0;
-    margin: auto;
-    transition: transform 0.5s ease-in-out;
+    z-index: 3; /* Higher than pocket, but lower than letter when open */
 }
 
-.envelope .pocket {
-    width: 100%;
-    height: 100%;
-    background: #ff7a9a;
-    border-radius: 10px;
+/* Flap shape */
+.flap {
+    border-top: 122.5px solid #FF6863;
+    border-left: 175px solid transparent;
+    border-right: 175px solid transparent;
+    border-bottom: 102.5px solid transparent;
+    transform-origin: top;
+    transition: transform 0.4s ease-in-out, z-index 0.6s;
+    z-index: 4; /* Make sure flap is under the letter */
 }
 
-/* Letter Styles */
+/* Envelope pocket */
+.pocket {
+    border-left: 175px solid #FF8BA0;
+    border-right: 175px solid #FF8BA0;
+    border-bottom: 112.5px solid #FFA8B5;
+    border-top: 112.5px solid transparent;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    z-index: 3;
+}
+
+/* Letter styling */
 .letter {
-    position: absolute;
+    position: relative;
+    background-color: white;
     width: 90%;
-    height: 90%;
-    background: #fff;
-    border-radius: 10px;
+    height: 95%;
     top: 5%;
-    left: 5%;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transform: translateY(100px);
-    opacity: 0;
-    transition: transform 0.6s ease-in-out, opacity 0.6s;
+    border-radius: 10px;
+    box-shadow: 0 2px 26px rgba(0, 0, 0, 0.12);
+    margin-left: auto;
+    margin-right: auto;
+    transition: transform 0.6s ease-in-out, z-index 0.6s;
+    z-index: 2; /* Initially under flap */
 }
 
-.letter-text {
+/* Letter text remains readable */
+.words {
+    position: absolute;
+    left: 10%;
+    width: 80%;
     font-size: 16px;
-    color: #333;
+    font-family: Arial, Helvetica, sans-serif;
+    color: black;
 }
 
-/* Floating Hearts */
-.hearts-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+/* Positioning for letter text */
+.line1 { top: 5%; }
+.line2 { top: 15%; }
+.line3 { top: 75%; text-align: center; }
+
+@keyframes envelopeBounce {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); }
 }
 
-.heart {
-    position: absolute;
-    color: #ff4f73;
-    font-size: 20px;
-    opacity: 0;
-    animation: floatUp 5s infinite;
+#envelope {
+    animation: envelopeBounce 1s ease-in-out;
+}
+/* Open envelope */
+.open .flap {
+    transform: rotateX(180deg);
+    z-index: 2; /* Moves below the letter */
 }
 
-@keyframes floatUp {
-    0% { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+/* Make the letter fully visible */
+.open .letter {
+    transform: translateY(-120px);
+    z-index: 5;
+    box-shadow: 0 0 20px rgba(255, 200, 200, 0.6);
 }
 
-/* Bouquet Reveal */
 .bouquet-container {
     position: absolute;
-    bottom: -300px;
+    bottom: -300px; /* Start hidden */
     left: 50%;
     transform: translateX(-50%);
-    width: 200px;
+    width: 300px;
+    height: auto;
     transition: bottom 1.5s ease-in-out;
 }
 
 .bouquet {
     width: 100%;
+    height: auto;
+}
+
+.bouquet-hearts {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.bouquet-heart {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    font-size: 30px;
+    opacity: 0;
+    transition: transform 5s linear, opacity 3s ease-out;
+}
+
+/* Container for hearts */
+.hearts {
+    position: absolute;
+    top: 90px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Heart styling */
+.heart {
+    position: absolute;
+    bottom: 0;
+    width: 30px;
+    height: 30px;
+    opacity: 0; /* Hidden initially */
+    display: none; /* Hide until activated */
+}
+
+/* Heart shape */
+.heart:before, .heart:after {
+    position: absolute;
+    content: "";
+    background: #d00000;
+    width: 30px;
+    height: 40px;
+    left: 15px;
+    top: 0;
+    border-radius: 15px 15px 0 0;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
+}
+
+.heart:after {
+    left: -15px;
+    transform: rotate(45deg);
+    transform-origin: 100% 100%;
+}
+
+/* Hearts hidden initially */
+.close .heart {
+    opacity: 0;
+    animation: none;
+    display: none;
+}
+
+/* Hearts float up when envelope is opened */
+.open .heart {
+    opacity: 1;
+    display: block;
+    animation: slideUp 5s linear infinite, sideSway 2s ease-in-out infinite alternate;
+}
+
+/* Heart floating animations */
+@keyframes slideUp {
+    0% { 
+        bottom: 0; 
+        opacity: 1; 
+        transform: rotate(0deg); 
+    }
+    100% { 
+        bottom: 600px; 
+        opacity: 0; 
+        transform: rotate(360deg); 
+    }
+}
+
+@keyframes sideSway {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-20px); }
+    50% { transform: translateX(20px); }
+    75% { transform: translateX(-15px); }
+    100% { transform: translateX(30px); }
+}
+
+/* Flowers hidden initially */
+.flowers {
+    text-align: center;
+    font-size: 40px;
+    margin-top: 30px;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+/* Flowers appear when envelope is opened */
+.open ~ .flowers {
+    opacity: 1;
+}
+
+/* Happy Women's Day text */
+.valentine {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(20, 20, 20);
+    font-size: 70px;
+    margin: 150px;
+}
+
+/* Flower explosion container */
+.flower-explosion {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+}
+
+/* Individual flower emojis */
+.flower {
+    font-size: 30px; /* Make the flowers larger */
+    position: absolute;
+    opacity: 0;
+    transition: transform 0.8s ease-out, opacity 0.5s ease-in-out;
+}
+
+/* Flower explosion effect (random directions) */
+.open ~ .flower-explosion .flower {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    transition: transform 1s ease-out, opacity 0.8s ease-in-out;
+}
+
+@keyframes flowerPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.open ~ .flower-explosion .flower {
+    animation: flowerPulse 2s infinite ease-in-out;
 }
